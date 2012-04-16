@@ -137,8 +137,9 @@ module Celluloid
     class SubSocket < Socket
       include ReadableSocket
 
-      def initialize
+      def initialize(topic = "")
         super :sub
+        @socket.setsockopt(::ZMQ::SUBSCRIBE, topic)
       end
     end
   end
