@@ -7,6 +7,8 @@ require 'celluloid/zmq/sockets'
 require 'celluloid/zmq/version'
 require 'celluloid/zmq/waker'
 
+require 'celluloid/zmq/pubsub_notifier'
+
 module Celluloid
   # Actors which run alongside 0MQ sockets
   module ZMQ
