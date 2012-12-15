@@ -5,6 +5,8 @@ module Celluloid
 
       attr_accessor :peers, :endpoint
 
+      finalizer :close
+
       def initialize(endpoint, peer_endpoints=[])
         super()
 
@@ -66,6 +68,11 @@ module Celluloid
 
       def publish(pattern, *args)
         @pub.write(pattern, *args)
+      end
+
+      def close
+        @pub.close if @pub
+        @sub.close if @sub
       end
     end
   end
