@@ -11,13 +11,12 @@ module Celluloid
         super()
 
         @endpoint = endpoint
-        init_pub_socket
+        init_pub_socket if @endpoint
         init_sub_socket
 
         Array(peer_endpoints).each do |peer_endpoint|
           add_peer(peer_endpoint)
         end
-
 
         async.listen
       end
@@ -67,7 +66,7 @@ module Celluloid
       end
 
       def publish(pattern, *args)
-        @pub.write(pattern, *args)
+        @pub.write(pattern, *args) if @pub
       end
 
       def close
