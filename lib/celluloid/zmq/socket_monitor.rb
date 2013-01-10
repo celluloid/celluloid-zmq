@@ -56,7 +56,7 @@ module Celluloid
           :bind_failed
         when ::ZMQ::EVENT_ACCEPTED
           :accepted
-        when ::ZMQ::ACCEPT_FAILED
+        when ::ZMQ::EVENT_ACCEPT_FAILED
           :accept_failed
         when ::ZMQ::EVENT_CLOSED
           :closed
