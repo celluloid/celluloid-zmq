@@ -181,5 +181,15 @@ module Celluloid
         end
       end
     end
+
+    # PairSockets are for inter-thread communication between two peers
+    class PairSocket < Socket
+      include ReadableSocket
+      include WritableSocket
+
+      def initialize
+        super :pair
+      end
+    end
   end
 end
