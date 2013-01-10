@@ -76,6 +76,16 @@ module Celluloid
         buffer
       end
 
+      # Read a ZMQ::Message from the socket
+      def read_message(message = ::ZMQ::Message.new)
+        Celluloid.current_actor.wait_readable(@socket) if evented?
+
+        unless ::ZMQ::Util.resultcode_ok? @socket.recvmsg message
+          raise IOError, "error receiving ZMQ string: #{::ZMQ::Util.error_string}"
+        end
+        message
+      end
+
       # Multiparts message ?
       def_delegator :@socket, :more_parts?
     end
