@@ -37,9 +37,7 @@ module Celluloid
 
       # override to handle events.
       def dispatch(event)
-        if Celluloid.logger
-          Celluloid.logger.debug "got #{event_to_symbol(event.event)} socket event: #{event}"
-        end
+        Logger.debug "got #{event_to_symbol(event.event)} socket event: #{event}"
       end
 
       def event_to_symbol(event)
