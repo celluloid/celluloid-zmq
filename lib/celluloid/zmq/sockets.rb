@@ -40,8 +40,8 @@ module Celluloid
 
       # Monitor the socket (Requires ZeroMQ 3.2+)
       if defined?(::ZMQ::EVENT_ALL)
-        def monitor(endpoint, flags = ::ZMQ::EVENT_ALL)
-          rc = ::ZMQ::LibZMQ.zmq_socket_monitor(@socket.socket, endpoint, flags)
+        def monitor(addr, flags = ::ZMQ::EVENT_ALL)
+          rc = ::ZMQ::LibZMQ.zmq_socket_monitor(@socket.socket, addr, flags)
           unless ::ZMQ::Util.resultcode_ok? rc
             raise IOError, "error monitoring socket: #{::ZMQ::Util.error_string}"
           end
