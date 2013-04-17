@@ -59,5 +59,15 @@ module Celluloid
     end
     module_function :wait_writable
 
+    # Does the 0MQ socket support evented operation?
+    def evented?
+      actor = Thread.current[:celluloid_actor]
+      return unless actor
+
+      mailbox = actor.mailbox
+      mailbox.is_a?(Celluloid::IO::Mailbox) && mailbox.reactor.is_a?(Celluloid::ZMQ::Reactor)
+    end
+    module_function :evented?
+
   end
 end
