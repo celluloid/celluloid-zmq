@@ -37,3 +37,5 @@ module Celluloid
     def_delegators 'current_actor.mailbox.reactor', :wait_readable, :wait_writable
   end
 end
+
+require 'celluloid/zmq/socket_monitor'

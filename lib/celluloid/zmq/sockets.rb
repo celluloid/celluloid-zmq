@@ -38,6 +38,17 @@ module Celluloid
         @socket.close
       end
 
+      # Monitor the socket (Requires ZeroMQ 3.2+)
+      if defined?(::ZMQ::EVENT_ALL)
+        def monitor(addr, flags = ::ZMQ::EVENT_ALL)
+          rc = ::ZMQ::LibZMQ.zmq_socket_monitor(@socket.socket, addr, flags)
+          unless ::ZMQ::Util.resultcode_ok? rc
+            raise IOError, "error monitoring socket: #{::ZMQ::Util.error_string}"
+          end
+        end
+      end
+
+
       # Does the 0MQ socket support evented operation?
       def evented?
         actor = Thread.current[:celluloid_actor]
@@ -74,6 +85,16 @@ module Celluloid
           raise IOError, "error receiving ZMQ string: #{::ZMQ::Util.error_string}"
         end
         buffer
+      end
+
+      # Read a ZMQ::Message from the socket
+      def read_message(message = ::ZMQ::Message.new)
+        Celluloid.current_actor.wait_readable(@socket) if evented?
+
+        unless ::ZMQ::Util.resultcode_ok? @socket.recvmsg message
+          raise IOError, "error receiving ZMQ string: #{::ZMQ::Util.error_string}"
+        end
+        message
       end
 
       # Multiparts message ?
@@ -179,6 +200,16 @@ module Celluloid
         unless ::ZMQ::Util.resultcode_ok? @socket.setsockopt(::ZMQ::UNSUBSCRIBE, topic)
           raise IOError, "couldn't set unsubscribe: #{::ZMQ::Util.error_string}"
         end
+      end
+    end
+
+    # PairSockets are for inter-thread communication between two peers
+    class PairSocket < Socket
+      include ReadableSocket
+      include WritableSocket
+
+      def initialize
+        super :pair
       end
     end
   end
