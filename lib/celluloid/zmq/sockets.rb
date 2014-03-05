@@ -90,6 +90,16 @@ module Celluloid
         end
         buffer
       end
+      
+      # Read a multipart string message from the socket
+      def read_multipart(buffer = [])
+        ZMQ.wait_readable(@socket) if ZMQ.evented?
+
+        unless ::ZMQ::Util.resultcode_ok? @socket.recv_strings buffer
+          raise IOError, "error receiving ZMQ string: #{::ZMQ::Util.error_string}"
+        end
+        buffer
+      end
 
       # Multiparts message ?
       def_delegator :@socket, :more_parts?
@@ -99,6 +109,8 @@ module Celluloid
     module WritableSocket
       # Send a message to the socket
       def write(*messages)
+        ZMQ.wait_writable(@socket) if ZMQ.evented?
+        
         unless ::ZMQ::Util.resultcode_ok? @socket.send_strings messages.flatten
           raise IOError, "error sending 0MQ message: #{::ZMQ::Util.error_string}"
         end
