@@ -2,11 +2,10 @@ module Celluloid
   module ZMQ
 
     class Socket
-      
+
       class << self
 
         def new_curve(options={})
-          puts "new_curve #{caller[0]}"
           socket = new
           socket.extend Curve
           socket.init options
