@@ -10,7 +10,6 @@ require 'celluloid/zmq/waker'
 
 require 'celluloid/zmq/curve'
 
-
 module Celluloid
   # Actors which run alongside 0MQ sockets
   module ZMQ
