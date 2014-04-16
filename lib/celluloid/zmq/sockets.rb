@@ -109,8 +109,6 @@ module Celluloid
     module WritableSocket
       # Send a message to the socket
       def write(*messages)
-        ZMQ.wait_writable(@socket) if ZMQ.evented?
-        
         unless ::ZMQ::Util.resultcode_ok? @socket.send_strings messages.flatten
           raise IOError, "error sending 0MQ message: #{::ZMQ::Util.error_string}"
         end
