@@ -1,11 +1,14 @@
 require 'ffi-rzmq'
 
 require 'celluloid'
+
 require 'celluloid/zmq/mailbox'
 require 'celluloid/zmq/reactor'
 require 'celluloid/zmq/sockets'
 require 'celluloid/zmq/version'
 require 'celluloid/zmq/waker'
+
+require 'celluloid/zmq/curve'
 
 module Celluloid
   # Actors which run alongside 0MQ sockets

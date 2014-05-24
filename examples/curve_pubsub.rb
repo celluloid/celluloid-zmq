@@ -1,21 +1,23 @@
 $:.unshift(File.expand_path("../lib"))
 
-puts "PublishSubscribe... PID# #{Process.pid}"
-
 require 'celluloid/zmq'
 Celluloid::ZMQ.init
 
-class PublishSubscribe
+puts "Curving... PID# #{Process.pid}"
+
+class EncryptedPublishSubscribe
   include Celluloid::ZMQ
 
   def run
     link = "tcp://127.0.0.1:5555"
 
-    s1 = PubSocket.new
-    s2 = SubSocket.new
-    s3 = SubSocket.new
-    s4 = SubSocket.new
-    s5 = SubSocket.new
+    s1 = PubSocket.new_curve
+
+    s2 = SubSocket.new_client s1
+    s3 = SubSocket.new_client s1
+    s4 = SubSocket.new_client s1
+    s5 = SubSocket.new_client s1
+
 
     s1.linger = 100
     s2.subscribe('') # receive all
@@ -72,4 +74,4 @@ class PublishSubscribe
   end
 end
 
-PublishSubscribe.new.run
+EncryptedPublishSubscribe.new.run

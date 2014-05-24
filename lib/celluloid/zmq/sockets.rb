@@ -1,6 +1,7 @@
 module Celluloid
   module ZMQ
     class Socket
+
       # Create a new socket
       def initialize(type)
         @socket = Celluloid::ZMQ.context.socket ::ZMQ.const_get(type.to_s.upcase)
