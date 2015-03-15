@@ -13,6 +13,9 @@ module Celluloid
         @sender   = ZMQ.context.socket(::ZMQ::PAIR)
         @receiver = ZMQ.context.socket(::ZMQ::PAIR)
 
+        @sender.setsockopt ::ZMQ::SNDHWM, 0
+        @receiver.setsockopt ::ZMQ::RCVHWM, 0
+
         @addr = "inproc://waker-#{object_id}"
         @sender.bind @addr
         @receiver.connect @addr
