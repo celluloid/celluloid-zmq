@@ -10,6 +10,7 @@ describe Celluloid::ZMQ::Socket, actor_system: :global do
     identity = socket.get(::ZMQ::IDENTITY)
 
     expect(identity).to eq("Identity")
+    socket.close
   end
 
 end

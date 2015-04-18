@@ -23,8 +23,7 @@ module Celluloid
 
       # Obtain a 0MQ context
       def init(worker_threads = 1)
-        return @context if @context
-        @context = ::ZMQ::Context.new(worker_threads)
+        @context ||= ::ZMQ::Context.new(worker_threads)
       end
 
       def context
