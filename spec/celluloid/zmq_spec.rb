@@ -25,14 +25,14 @@ describe Celluloid::ZMQ do
       server.send_string("hello world")
       message = ""
       client.recv_string(message)
-      message.should eq("hello world")
+      expect(message).to eq("hello world")
     end
 
     it "can set ZMQ context manually", :no_init do
       context = ::ZMQ::Context.new(1)
       begin
         Celluloid::ZMQ.context = context
-        Celluloid::ZMQ.context.should eq(context)
+        expect(Celluloid::ZMQ.context).to eq(context)
       ensure
         context.terminate
       end
@@ -46,7 +46,7 @@ describe Celluloid::ZMQ do
       Celluloid::ZMQ.terminate
       expect { Celluloid::ZMQ.context }.to raise_error(Celluloid::ZMQ::UninitializedError)
       Celluloid::ZMQ.init
-      Celluloid::ZMQ.context.should_not be_nil
+      expect(Celluloid::ZMQ.context).not_to be_nil
     end
   end
 
@@ -82,7 +82,7 @@ describe Celluloid::ZMQ do
 
       server.send_string("hello world")
       result = client.fetch
-      result.should eq("hello world")
+      expect(result).to eq("hello world")
     end
 
     it "suspends actor while waiting for message" do
@@ -90,9 +90,9 @@ describe Celluloid::ZMQ do
       client = actor.new(0)
 
       result = client.future.fetch
-      client.say_hi.should eq("Hi!")
+      expect(client.say_hi).to eq("Hi!")
       server.send_string("hello world")
-      result.value.should eq("hello world")
+      expect(result.value).to eq("hello world")
     end
   end
 
@@ -131,7 +131,7 @@ describe Celluloid::ZMQ do
 
       message = ""
       client.recv_string(message)
-      message.should eq("hello world")
+      expect(message).to eq("hello world")
     end
 
     it "suspends actor while waiting for message to be sent" do
@@ -140,13 +140,13 @@ describe Celluloid::ZMQ do
 
       result = server.future.send("hello world")
 
-      server.say_hi.should eq("Hi!")
+      expect(server.say_hi).to eq("Hi!")
 
       message = ""
       client.recv_string(message)
-      message.should eq("hello world")
+      expect(message).to eq("hello world")
 
-      result.value.should be_true
+      expect(result.value).to be_true
     end
   end
 end
