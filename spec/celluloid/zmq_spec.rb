@@ -1,4 +1,4 @@
-describe Celluloid::ZMQ do
+RSpec.describe Celluloid::ZMQ do
   before { @sockets = [] }
   after { @sockets.each(&:close) }
 
