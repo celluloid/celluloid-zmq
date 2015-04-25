@@ -1,4 +1,5 @@
 --color
+--tty
 --format documentation
 --backtrace
 --order random
