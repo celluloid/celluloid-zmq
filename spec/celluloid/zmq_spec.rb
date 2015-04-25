@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Celluloid::ZMQ do
   before { @sockets = [] }
   after { @sockets.each(&:close) }

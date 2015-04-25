@@ -1,4 +1,3 @@
-require 'spec_helper'
 require 'celluloid/rspec'
 
 describe Celluloid::ZMQ do
