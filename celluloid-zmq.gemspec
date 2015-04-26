@@ -7,11 +7,12 @@ Gem::Specification.new do |gem|
   gem.description   = "Celluloid bindings to the ffi-rzmq library"
   gem.summary       = "Celluloid::ZMQ provides concurrent Celluloid actors that can listen for 0MQ events"
   gem.homepage      = "http://github.com/celluloid/celluloid-zmq"
+  gem.license       = "MIT"
 
   gem.name          = "celluloid-zmq"
   gem.version       = Celluloid::ZMQ::VERSION
 
-  gem.add_dependency "celluloid", ">= 0.16.0"
+  gem.add_dependency "celluloid", "~> 0.16"
   gem.add_dependency "ffi"
   gem.add_dependency "ffi-rzmq"
 
