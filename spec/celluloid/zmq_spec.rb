@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe Celluloid::ZMQ do
+RSpec.describe Celluloid::ZMQ do
   before { @sockets = [] }
   after { @sockets.each(&:close) }
 
@@ -146,7 +144,7 @@ describe Celluloid::ZMQ do
       client.recv_string(message)
       expect(message).to eq("hello world")
 
-      expect(result.value).to be_true
+      expect(result.value).to be_truthy
     end
   end
 end

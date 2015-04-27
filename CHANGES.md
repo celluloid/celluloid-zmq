@@ -1,3 +1,9 @@
+0.16.1 (2015-04-26)
+-------------------
+* Support for XPUB sockets
+* Support for reading multipart messages
+* Spec cleanup
+
 0.16.0 (2014-09-04)
 -------------------
 * Support for setting socket options

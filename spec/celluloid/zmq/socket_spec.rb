@@ -1,7 +1,6 @@
-require 'spec_helper'
 require 'celluloid/rspec'
 
-describe Celluloid::ZMQ::Socket, actor_system: :global do
+RSpec.describe Celluloid::ZMQ::Socket, actor_system: :global do
 
   it "allows setting and getting ZMQ options on the socket" do
     socket = Celluloid::ZMQ::RepSocket.new
@@ -10,6 +9,7 @@ describe Celluloid::ZMQ::Socket, actor_system: :global do
     identity = socket.get(::ZMQ::IDENTITY)
 
     expect(identity).to eq("Identity")
+    socket.close
   end
 
 end
