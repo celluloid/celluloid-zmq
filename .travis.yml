@@ -10,6 +10,7 @@ rvm:
   - rbx-2
 
 matrix:
+  fast_finish: true
   allow_failures:
     - rvm: jruby
     - rvm: rbx-2
