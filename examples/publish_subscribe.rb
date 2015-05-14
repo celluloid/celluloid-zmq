@@ -1,5 +1,7 @@
 require 'celluloid/zmq'
 
+Celluloid::ZMQ.init
+
 class PublishSubscribe
   include Celluloid::ZMQ
 

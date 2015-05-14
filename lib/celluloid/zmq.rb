@@ -7,6 +7,10 @@ require 'celluloid/zmq/sockets'
 require 'celluloid/zmq/version'
 require 'celluloid/zmq/waker'
 
+require 'celluloid/zmq/socket/readable'
+require 'celluloid/zmq/socket/writable'
+require 'celluloid/zmq/socket/types'
+
 module Celluloid
   # Actors which run alongside 0MQ sockets
   module ZMQ
@@ -67,3 +71,5 @@ module Celluloid
 
   end
 end
+
+require 'celluloid/zmq/deprecate' unless $CELLULOID_BACKPORTED == false
