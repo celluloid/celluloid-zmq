@@ -1,9 +1,12 @@
 require 'ffi-rzmq'
 
-require 'celluloid'
+$CELLULOID_ZMQ_BACKPORTED = (ENV["CELLULOID_ZMQ_BACKPORTED"] != "false") unless defined?($CELLULOID_ZMQ_BACKPORTED)
+
+require ($CELLULOID_ZMQ_BACKPORTED) ? 'celluloid' : 'celluloid/current'
+
 require 'celluloid/zmq/mailbox'
 require 'celluloid/zmq/reactor'
-require 'celluloid/zmq/sockets'
+require 'celluloid/zmq/socket'
 require 'celluloid/zmq/version'
 require 'celluloid/zmq/waker'
 
@@ -72,4 +75,4 @@ module Celluloid
   end
 end
 
-require 'celluloid/zmq/deprecate' unless $CELLULOID_BACKPORTED == false
+require 'celluloid/zmq/deprecate' unless $CELLULOID_BACKPORTED == false || $CELLULOID_ZMQ_BACKPORTED == false
