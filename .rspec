@@ -1,5 +1,7 @@
 --color
+--tty
 --format documentation
 --backtrace
 --order random
+--require spec_helper
 --warnings
