@@ -1,37 +1,41 @@
+0.70.0
+-----
+* Adapted to be compliant with version 0.17.0 of Celluloid.
+
 0.16.1 (2015-04-26)
--------------------
+-----
 * Support for XPUB sockets
 * Support for reading multipart messages
 * Spec cleanup
 
 0.16.0 (2014-09-04)
--------------------
+-----
 * Support for setting socket options
 * More specs
 
 0.15.0 (2013-09-04)
--------------------
+-----
 * Tracking release for Celluloid 0.15
 
 0.14.0 (2013-05-07)
--------------------
+-----
 * Add pubsub example
 * Add identity support to Sockets
 * Depend on EventedMailbox from core instead of celluloid-io
 * Remove overhead for IO waiting by calling directly to the reactor
 
 0.13.0
-------
+-----
 * Feature: Support for DealerSocket and RouterSocket
 * Support for the #more_parts? method on sockets
 * Celluloid 0.13 compatibility fixes
 
 0.12.0
-------
+-----
 * Tracking release for Celluloid 0.12.0
 
 0.10.0
-------
+-----
 * Factor celluloid-zmq into its own gem
 * #linger= support
 
