@@ -1,6 +1,6 @@
-0.16.5
+0.70.0
 -----
-* Adapted to be compliant with version 0.17.0-prerelease of Celluloid.
+* Adapted to be compliant with version 0.17.0 of Celluloid.
 
 0.16.1 (2015-04-26)
 -----
