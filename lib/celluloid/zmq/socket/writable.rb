@@ -13,6 +13,14 @@ module Celluloid
         end
         alias_method :<<, :write
         alias_method :send, :write # deprecated
+
+        def write_to(address, message)
+          @socket.send_string "#{address}", ::ZMQ::SNDMORE
+          @socket.send_string "", ::ZMQ::SNDMORE
+          @socket.send_string message
+          message
+        end
+
       end
     end
   end

@@ -26,11 +26,15 @@ module Celluloid
       end
 
       def identity=(value)
-        @socket.identity = value
+        unless ::ZMQ::Util.resultcode_ok? @socket.setsockopt(::ZMQ::IDENTITY, "#{value}")     
+          raise IOError, "couldn't set identity: #{::ZMQ::Util.error_string}"   
+        end
+        #de @socket.identity = value
       end
 
       def identity
-        @socket.identity
+        #de @socket.identity
+        get(::ZMQ::IDENTITY)
       end
 
       def set(option, value, length = nil)
