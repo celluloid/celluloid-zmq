@@ -7,6 +7,8 @@ module Celluloid
     # Works like a ConditionVariable, except it's implemented as a ZMQ socket
     # so that it can be multiplexed alongside other ZMQ sockets
     class Waker
+      extend Forwardable
+      def_delegator ZMQ, :result_ok?
       PAYLOAD = "\0" # the payload doesn't matter, it's just a signal
 
       def initialize
@@ -23,7 +25,7 @@ module Celluloid
       # Wakes up the thread that is waiting for this Waker
       def signal
         @sender_lock.synchronize do
-          unless ::ZMQ::Util.resultcode_ok? @sender.send_string PAYLOAD
+          unless result_ok? @sender.send_string PAYLOAD
             raise DeadWakerError, "error sending 0MQ message: #{::ZMQ::Util.error_string}"
           end
         end
@@ -39,7 +41,7 @@ module Celluloid
         message = ''
         rc = @receiver.recv_string message
 
-        unless ::ZMQ::Util.resultcode_ok? rc and message == PAYLOAD
+        unless result_ok? rc and message == PAYLOAD
           raise DeadWakerError, "error receiving ZMQ string: #{::ZMQ::Util.error_string}"
         end
       end

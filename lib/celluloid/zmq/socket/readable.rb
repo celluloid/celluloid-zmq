@@ -4,6 +4,7 @@ module Celluloid
       # Readable 0MQ sockets have a read method
       module Readable
         extend Forwardable
+        def_delegator ZMQ, :result_ok?
 
         # always set LINGER on readable sockets
         def bind(addr)
@@ -20,7 +21,7 @@ module Celluloid
         def read(buffer = '')
           ZMQ.wait_readable(@socket) if ZMQ.evented?
 
-          unless ::ZMQ::Util.resultcode_ok? @socket.recv_string buffer
+          unless result_ok? @socket.recv_string buffer
             raise IOError, "error receiving ZMQ string: #{::ZMQ::Util.error_string}"
           end
           buffer
@@ -34,7 +35,7 @@ module Celluloid
         def read_multipart(buffer = [])
           ZMQ.wait_readable(@socket) if ZMQ.evented?
 
-          unless ::ZMQ::Util.resultcode_ok? @socket.recv_strings buffer
+          unless result_ok? @socket.recv_strings buffer
             raise IOError, "error receiving ZMQ string: #{::ZMQ::Util.error_string}"
           end
           buffer
