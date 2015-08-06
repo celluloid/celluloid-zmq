@@ -22,11 +22,6 @@ module CelluloidSpecs
   TIMER_QUANTUM = 0.05
 end
 
-CelluloidSpecs.require('support/actor_example_class')
-CelluloidSpecs.require('support/crash_checking')
-CelluloidSpecs.require('support/logging')
-CelluloidSpecs.require('support/sleep_and_wait')
-
 logfile = File.open(File.expand_path("../../log/test.log", __FILE__), 'a')
 Celluloid.logger = Logger.new(logfile)
 
