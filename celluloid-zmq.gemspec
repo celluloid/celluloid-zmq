@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-require File.expand_path('../lib/celluloid/zmq/version', __FILE__)
+require File.expand_path("../culture/sync", __FILE__)
 
 Gem::Specification.new do |gem|
   gem.authors       = ["Tony Arcieri"]
@@ -12,12 +12,9 @@ Gem::Specification.new do |gem|
   gem.name          = "celluloid-zmq"
   gem.version       = Celluloid::ZMQ::VERSION
 
-  gem.add_dependency "celluloid", "~> 0.16"
+  Celluloid::Sync::Gemspec[gem]
   gem.add_dependency "ffi"
   gem.add_dependency "ffi-rzmq"
-
-  gem.add_development_dependency "rake"
-  gem.add_development_dependency "rspec", "~> 3.0"
 
   # Files
   ignores = File.read(".gitignore").split(/\r?\n/).reject{ |f| f =~ /^(#.+|\s*)$/ }.map {|f| Dir[f] }.flatten

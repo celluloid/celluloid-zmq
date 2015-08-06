@@ -1,16 +1,23 @@
 require 'ffi-rzmq'
 
-require 'celluloid'
+$CELLULOID_ZMQ_BACKPORTED = (ENV["CELLULOID_ZMQ_BACKPORTED"] != "false") unless defined?($CELLULOID_ZMQ_BACKPORTED)
+
+require ($CELLULOID_ZMQ_BACKPORTED) ? 'celluloid' : 'celluloid/current'
+
 require 'celluloid/zmq/mailbox'
 require 'celluloid/zmq/reactor'
-require 'celluloid/zmq/sockets'
+require 'celluloid/zmq/socket'
 require 'celluloid/zmq/version'
 require 'celluloid/zmq/waker'
+
+require 'celluloid/zmq/socket/readable'
+require 'celluloid/zmq/socket/writable'
+require 'celluloid/zmq/socket/types'
 
 module Celluloid
   # Actors which run alongside 0MQ sockets
   module ZMQ
-    UninitializedError = Class.new StandardError
+    class UninitializedError < Celluloid::Error; end
 
     class << self
       attr_writer :context
@@ -65,5 +72,12 @@ module Celluloid
     end
     module_function :wait_writable
 
+    def result_ok?(result)
+      ::ZMQ::Util.resultcode_ok?(result)
+    end
+    module_function :result_ok?
+
   end
 end
+
+require 'celluloid/zmq/deprecate' unless $CELLULOID_BACKPORTED == false || $CELLULOID_ZMQ_BACKPORTED == false

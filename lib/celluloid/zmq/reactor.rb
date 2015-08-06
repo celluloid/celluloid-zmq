@@ -3,10 +3,11 @@ module Celluloid
     # React to incoming 0MQ and Celluloid events. This is kinda sorta supposed
     # to resemble the Reactor design pattern.
     class Reactor
-      extend Forwardable
 
+      extend Forwardable
       def_delegator :@waker, :signal, :wakeup
       def_delegator :@waker, :cleanup, :shutdown
+      def_delegator ZMQ, :result_ok?
 
       def initialize
         @waker = Waker.new
@@ -15,7 +16,7 @@ module Celluloid
         @writers = {}
 
         rc = @poller.register @waker.socket, ::ZMQ::POLLIN
-        unless ::ZMQ::Util.resultcode_ok? rc
+        unless result_ok? rc
           raise "0MQ poll error: #{::ZMQ::Util.error_string}"
         end
       end
@@ -55,7 +56,7 @@ module Celluloid
 
         rc = @poller.poll(timeout)
 
-        unless ::ZMQ::Util.resultcode_ok? rc
+        unless result_ok? rc
           raise IOError, "0MQ poll error: #{::ZMQ::Util.error_string}"
         end
 
