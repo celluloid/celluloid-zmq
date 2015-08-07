@@ -1,4 +1,4 @@
-0.70.0
+0.17.0 (2015-08-15)
 -----
 * Adapted to be compliant with version 0.17.0 of Celluloid.
 * Added `write_to` for use with `Router` sockets.
