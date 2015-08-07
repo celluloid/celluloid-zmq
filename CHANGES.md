@@ -1,6 +1,8 @@
 0.70.0
 -----
 * Adapted to be compliant with version 0.17.0 of Celluloid.
+* Added `write_to` for use with `Router` sockets.
+* Added more direct set/get of socket identity.
 
 0.16.1 (2015-04-26)
 -----

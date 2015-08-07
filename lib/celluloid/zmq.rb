@@ -17,7 +17,7 @@ require 'celluloid/zmq/socket/types'
 module Celluloid
   # Actors which run alongside 0MQ sockets
   module ZMQ
-    UninitializedError = Class.new StandardError
+    class UninitializedError < Celluloid::Error; end
 
     class << self
       attr_writer :context
@@ -71,6 +71,11 @@ module Celluloid
       nil
     end
     module_function :wait_writable
+
+    def result_ok?(result)
+      ::ZMQ::Util.resultcode_ok?(result)
+    end
+    module_function :result_ok?
 
   end
 end
