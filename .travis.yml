@@ -12,10 +12,14 @@ rvm:
 matrix:
   fast_finish: true
   allow_failures:
-    - rvm: jruby
-    - rvm: rbx-2
     - rvm: ruby-head
     - rvm: jruby-head
+    - env: CELLULOID_BACKPORTED=true
+
+env:
+  matrix:
+    - CELLULOID_BACKPORTED=true
+    - CELLULOID_BACKPORTED=false
 
 notifications:
   irc: "irc.freenode.org#celluloid"

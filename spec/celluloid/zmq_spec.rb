@@ -48,7 +48,7 @@ RSpec.describe Celluloid::ZMQ do
     end
   end
 
-  describe Celluloid::ZMQ::RepSocket do
+  describe Celluloid::ZMQ::Socket::Rep do
     let(:actor) do
       Class.new do
         include Celluloid::ZMQ
@@ -56,7 +56,7 @@ RSpec.describe Celluloid::ZMQ do
         finalizer :close_socket
 
         def initialize(index)
-          @socket = Celluloid::ZMQ::RepSocket.new
+          @socket = Celluloid::ZMQ::Socket::Rep.new
           @socket.connect("inproc://celluloid-spec-#{index}")
         end
 
@@ -94,7 +94,7 @@ RSpec.describe Celluloid::ZMQ do
     end
   end
 
-  describe Celluloid::ZMQ::ReqSocket do
+  describe Celluloid::ZMQ::Socket::Req do
     let(:actor) do
       Class.new do
         include Celluloid::ZMQ
@@ -102,7 +102,7 @@ RSpec.describe Celluloid::ZMQ do
         finalizer :close_socket
 
         def initialize(index)
-          @socket = Celluloid::ZMQ::ReqSocket.new
+          @socket = Celluloid::ZMQ::Socket::Req.new
           @socket.connect("inproc://celluloid-spec-#{index}")
         end
 

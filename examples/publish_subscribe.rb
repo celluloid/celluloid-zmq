@@ -1,4 +1,6 @@
-require 'celluloid/zmq'
+require 'celluloid/zmq/current'
+
+Celluloid::ZMQ.init
 
 class PublishSubscribe
   include Celluloid::ZMQ
@@ -6,11 +8,11 @@ class PublishSubscribe
   def run
     link = "tcp://127.0.0.1:5555"
 
-    s1 = PubSocket.new
-    s2 = SubSocket.new
-    s3 = SubSocket.new
-    s4 = SubSocket.new
-    s5 = SubSocket.new
+    s1 = Socket::Pub.new
+    s2 = Socket::Sub.new
+    s3 = Socket::Sub.new
+    s4 = Socket::Sub.new
+    s5 = Socket::Sub.new
 
     s1.linger = 100
     s2.subscribe('') # receive all
