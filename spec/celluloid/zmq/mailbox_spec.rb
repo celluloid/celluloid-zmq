@@ -1,5 +1,5 @@
 require 'celluloid/rspec'
 
-RSpec.describe Celluloid::ZMQ::Mailbox do
+RSpec.describe Celluloid::ZMQ::Mailbox, library: :ZMQ do
   it_behaves_like "a Celluloid Mailbox"
 end
