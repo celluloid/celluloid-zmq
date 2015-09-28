@@ -10,7 +10,6 @@ module Celluloid
           unless result_ok? @socket.send_strings(messages.flatten)
             raise IOError, "error sending 0MQ message: #{::ZMQ::Util.error_string}"
           end
-
           messages
         end
         alias_method :<<, :write

@@ -11,5 +11,4 @@ RSpec.describe Celluloid::ZMQ::Socket, library: :ZMQ do
     expect(identity).to eq("Identity")
     socket.close
   end
-
 end

@@ -1,3 +1,8 @@
+0.17.2 (2015-09-28)
+-----
+* Revamped test suite, using shared RSpec configuration layer provided by Celluloid itself.
+* Updated gem dependencies provided by Celluloid::Sync... extraneous gems removed, or marked as development dependencies.
+
 0.17.0 (2015-08-15)
 -----
 * Adapted to be compliant with version 0.17.0 of Celluloid.
