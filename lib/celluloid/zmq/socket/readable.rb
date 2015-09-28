@@ -18,11 +18,11 @@ module Celluloid
         end
 
         # Read a message from the socket
-        def read(buffer = '')
+        def read(buffer = "")
           ZMQ.wait_readable(@socket) if ZMQ.evented?
 
           unless result_ok? @socket.recv_string buffer
-            raise IOError, "error receiving ZMQ string: #{::ZMQ::Util.error_string}"
+            fail IOError, "error receiving ZMQ string: #{::ZMQ::Util.error_string}"
           end
           buffer
         end
@@ -36,7 +36,7 @@ module Celluloid
           ZMQ.wait_readable(@socket) if ZMQ.evented?
 
           unless result_ok? @socket.recv_strings buffer
-            raise IOError, "error receiving ZMQ string: #{::ZMQ::Util.error_string}"
+            fail IOError, "error receiving ZMQ string: #{::ZMQ::Util.error_string}"
           end
           buffer
         end

@@ -8,7 +8,7 @@ module Celluloid
         # Send a message to the socket
         def write(*messages)
           unless result_ok? @socket.send_strings(messages.flatten)
-            raise IOError, "error sending 0MQ message: #{::ZMQ::Util.error_string}"
+            fail IOError, "error sending 0MQ message: #{::ZMQ::Util.error_string}"
           end
           messages
         end
@@ -17,12 +17,11 @@ module Celluloid
 
         def write_to(address, message)
           error = [IOError, "Failure sending part of message."]
-          raise *error unless result_ok? @socket.send_string("#{address}", ::ZMQ::SNDMORE)
-          raise *error unless result_ok? @socket.send_string("", ::ZMQ::SNDMORE)
-          raise *error unless result_ok? @socket.send_string(message)
+          fail *error unless result_ok? @socket.send_string("#{address}", ::ZMQ::SNDMORE)
+          fail *error unless result_ok? @socket.send_string("", ::ZMQ::SNDMORE)
+          fail *error unless result_ok? @socket.send_string(message)
           message
         end
-
       end
     end
   end

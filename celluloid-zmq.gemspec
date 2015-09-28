@@ -17,9 +17,9 @@ Gem::Specification.new do |gem|
   gem.add_dependency "ffi-rzmq"
 
   # Files
-  ignores = File.read(".gitignore").split(/\r?\n/).reject{ |f| f =~ /^(#.+|\s*)$/ }.map {|f| Dir[f] }.flatten
-  gem.files = (Dir['**/*','.gitignore'] - ignores).reject {|f| !File.file?(f) }
-  gem.test_files = (Dir['spec/**/*','.gitignore'] - ignores).reject {|f| !File.file?(f) }
+  ignores = File.read(".gitignore").split(/\r?\n/).reject { |f| f =~ /^(#.+|\s*)$/ }.map { |f| Dir[f] }.flatten
+  gem.files = (Dir["**/*", ".gitignore"] - ignores).reject { |f| !File.file?(f) }
+  gem.test_files = (Dir["spec/**/*", ".gitignore"] - ignores).reject { |f| !File.file?(f) }
   # gem.executables   = Dir['bin/*'].map { |f| File.basename(f) }
-  gem.require_paths = ['lib']
+  gem.require_paths = ["lib"]
 end

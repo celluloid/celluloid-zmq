@@ -26,7 +26,7 @@ module Celluloid
       def signal
         @sender_lock.synchronize do
           unless result_ok? @sender.send_string PAYLOAD
-            raise DeadWakerError, "error sending 0MQ message: #{::ZMQ::Util.error_string}"
+            fail DeadWakerError, "error sending 0MQ message: #{::ZMQ::Util.error_string}"
           end
         end
       end
@@ -38,18 +38,28 @@ module Celluloid
 
       # Wait for another thread to signal this Waker
       def wait
-        message = ''
+        message = ""
         rc = @receiver.recv_string message
 
-        unless result_ok? rc and message == PAYLOAD
-          raise DeadWakerError, "error receiving ZMQ string: #{::ZMQ::Util.error_string}"
+        unless result_ok?(rc) && message == PAYLOAD
+          fail DeadWakerError, "error receiving ZMQ string: #{::ZMQ::Util.error_string}"
         end
       end
 
       # Clean up the IO objects associated with this waker
       def cleanup
-        @sender_lock.synchronize { @sender.close rescue nil }
-        @receiver.close rescue nil
+        @sender_lock.synchronize do
+          begin
+                                     @sender.close
+                                   rescue
+                                     nil
+                                   end
+        end
+        begin
+          @receiver.close
+        rescue
+          nil
+        end
         nil
       end
       alias_method :shutdown, :cleanup

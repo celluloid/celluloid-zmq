@@ -14,7 +14,7 @@ module Celluloid
       # Address should be in the form: tcp://1.2.3.4:5678/
       def connect(addr)
         unless result_ok? @socket.connect addr
-          raise IOError, "error connecting to #{addr}: #{::ZMQ::Util.error_string}"
+          fail IOError, "error connecting to #{addr}: #{::ZMQ::Util.error_string}"
         end
         true
       end
@@ -23,25 +23,25 @@ module Celluloid
         @linger = value || -1
 
         unless result_ok? @socket.setsockopt(::ZMQ::LINGER, value)
-          raise IOError, "couldn't set linger: #{::ZMQ::Util.error_string}"
+          fail IOError, "couldn't set linger: #{::ZMQ::Util.error_string}"
         end
       end
 
       def identity=(value)
-        unless result_ok? @socket.setsockopt(::ZMQ::IDENTITY, "#{value}")     
-          raise IOError, "couldn't set identity: #{::ZMQ::Util.error_string}"   
+        unless result_ok? @socket.setsockopt(::ZMQ::IDENTITY, "#{value}")
+          fail IOError, "couldn't set identity: #{::ZMQ::Util.error_string}"
         end
-        #de @socket.identity = value
+        # de @socket.identity = value
       end
 
       def identity
-        #de @socket.identity
+        # de @socket.identity
         get(::ZMQ::IDENTITY)
       end
 
       def set(option, value, length = nil)
         unless result_ok? @socket.setsockopt(option, value, length)
-          raise IOError, "couldn't set value for option #{option}: #{::ZMQ::Util.error_string}"
+          fail IOError, "couldn't set value for option #{option}: #{::ZMQ::Util.error_string}"
         end
       end
 
@@ -49,7 +49,7 @@ module Celluloid
         option_value = []
 
         unless result_ok? @socket.getsockopt(option, option_value)
-          raise IOError, "couldn't get value for option #{option}: #{::ZMQ::Util.error_string}"
+          fail IOError, "couldn't get value for option #{option}: #{::ZMQ::Util.error_string}"
         end
 
         option_value[0]
@@ -59,7 +59,7 @@ module Celluloid
       # Address should be in the form: tcp://1.2.3.4:5678/
       def bind(addr)
         unless result_ok? @socket.bind(addr)
-          raise IOError, "couldn't bind to #{addr}: #{::ZMQ::Util.error_string}"
+          fail IOError, "couldn't bind to #{addr}: #{::ZMQ::Util.error_string}"
         end
       end
 

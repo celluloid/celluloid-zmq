@@ -1,4 +1,4 @@
-require 'celluloid/zmq/current'
+require "celluloid/zmq/current"
 
 Celluloid::ZMQ.init
 
@@ -15,10 +15,10 @@ class PublishSubscribe
     s5 = Socket::Sub.new
 
     s1.linger = 100
-    s2.subscribe('') # receive all
-    s3.subscribe('animals') # receive any starting with this string
-    s4.subscribe('animals.dog')
-    s5.subscribe('animals.cat')
+    s2.subscribe("") # receive all
+    s3.subscribe("animals") # receive any starting with this string
+    s4.subscribe("animals.dog")
+    s5.subscribe("animals.cat")
 
     s1.bind(link)
     s2.connect(link)
@@ -37,32 +37,31 @@ class PublishSubscribe
     # automatically separate the topic from the body
     s1.write(topic, payload, s1.identity)
 
-    topic = ''
+    topic = ""
     s2.read(topic)
 
-    body = ''
+    body = ""
     s2.read(body) if s2.more_parts?
 
-    identity = ''
+    identity = ""
     s2.read(identity) if s2.more_parts?
     puts "s2 received topic [#{topic}], body [#{body}], identity [#{identity}]"
 
-
-    topic = ''
+    topic = ""
     s3.read(topic)
 
-    body = ''
+    body = ""
     s3.read(body) if s3.more_parts?
     puts "s3 received topic [#{topic}], body [#{body}]"
 
-    topic = ''
+    topic = ""
     s4.read(topic)
 
-    body = ''
+    body = ""
     s4.read(body) if s4.more_parts?
     puts "s4 received topic [#{topic}], body [#{body}]"
 
-    s5_string = ''
+    s5_string = ""
     s5.read(s5_string)
 
     # we will never get here

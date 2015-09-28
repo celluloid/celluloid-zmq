@@ -1,18 +1,18 @@
-require 'ffi-rzmq'
+require "ffi-rzmq"
 
 $CELLULOID_ZMQ_BACKPORTED = (ENV["CELLULOID_ZMQ_BACKPORTED"] != "false") unless defined?($CELLULOID_ZMQ_BACKPORTED)
 
-require ($CELLULOID_ZMQ_BACKPORTED) ? 'celluloid' : 'celluloid/current'
+require ($CELLULOID_ZMQ_BACKPORTED) ? "celluloid" : "celluloid/current"
 
-require 'celluloid/zmq/mailbox'
-require 'celluloid/zmq/reactor'
-require 'celluloid/zmq/socket'
-require 'celluloid/zmq/version'
-require 'celluloid/zmq/waker'
+require "celluloid/zmq/mailbox"
+require "celluloid/zmq/reactor"
+require "celluloid/zmq/socket"
+require "celluloid/zmq/version"
+require "celluloid/zmq/waker"
 
-require 'celluloid/zmq/socket/readable'
-require 'celluloid/zmq/socket/writable'
-require 'celluloid/zmq/socket/types'
+require "celluloid/zmq/socket/readable"
+require "celluloid/zmq/socket/writable"
+require "celluloid/zmq/socket/types"
 
 module Celluloid
   # Actors which run alongside 0MQ sockets
@@ -34,7 +34,7 @@ module Celluloid
       end
 
       def context
-        raise UninitializedError, "you must initialize Celluloid::ZMQ by calling Celluloid::ZMQ.init" unless @context
+        fail UninitializedError, "you must initialize Celluloid::ZMQ by calling Celluloid::ZMQ.init" unless @context
         @context
       end
 
@@ -55,7 +55,7 @@ module Celluloid
         mailbox = Thread.current[:celluloid_mailbox]
         mailbox.reactor.wait_readable(socket)
       else
-        raise ArgumentError, "unable to wait for ZMQ sockets outside the event loop"
+        fail ArgumentError, "unable to wait for ZMQ sockets outside the event loop"
       end
       nil
     end
@@ -66,7 +66,7 @@ module Celluloid
         mailbox = Thread.current[:celluloid_mailbox]
         mailbox.reactor.wait_writable(socket)
       else
-        raise ArgumentError, "unable to wait for ZMQ sockets outside the event loop"
+        fail ArgumentError, "unable to wait for ZMQ sockets outside the event loop"
       end
       nil
     end
@@ -76,8 +76,7 @@ module Celluloid
       ::ZMQ::Util.resultcode_ok?(result)
     end
     module_function :result_ok?
-
   end
 end
 
-require 'celluloid/zmq/deprecate' unless $CELLULOID_BACKPORTED == false || $CELLULOID_ZMQ_BACKPORTED == false
+require "celluloid/zmq/deprecate" unless $CELLULOID_BACKPORTED == false || $CELLULOID_ZMQ_BACKPORTED == false

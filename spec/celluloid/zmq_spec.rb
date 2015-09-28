@@ -2,13 +2,13 @@ RSpec.describe Celluloid::ZMQ, library: :ZMQ do
   before { @sockets = [] }
   after { @sockets.each(&:close) }
 
-  def connect(socket, index=0)
+  def connect(socket, index = 0)
     socket.connect("inproc://celluloid-spec-#{index}")
     @sockets << socket
     socket
   end
 
-  def bind(socket, index=0)
+  def bind(socket, index = 0)
     socket.bind("inproc://celluloid-spec-#{index}")
     @sockets << socket
     socket
