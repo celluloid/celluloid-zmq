@@ -5,11 +5,11 @@
 [![Code Climate](https://codeclimate.com/github/celluloid/celluloid-zmq.png)](https://codeclimate.com/github/celluloid/celluloid-zmq)
 [![Coverage Status](https://coveralls.io/repos/celluloid/celluloid-zmq/badge.png?branch=master)](https://coveralls.io/r/celluloid/celluloid-zmq)
 
-Celluloid::ZMQ provides Celluloid actors that can interact with [0MQ sockets][0mq].
-Underneath, it's built on the [ffi-rzmq][ffi-rzmq] library. Celluloid::ZMQ was
+`Celluloid::ZMQ` provides Celluloid actors that can interact with [0MQ sockets][0mq].
+Underneath, it's built on the [ffi-rzmq][ffi-rzmq] library. `Celluloid::ZMQ` was
 primarily created for the purpose of writing [DCell][dcell], distributed Celluloid
 over 0MQ, so before you go building your own distributed Celluloid systems with
-Celluloid::ZMQ, be sure to give DCell a look and decide if it fits your purposes.
+`Celluloid::ZMQ`, be sure to give DCell a look and decide if it fits your purposes.
 
 [0mq]: http://www.zeromq.org/
 [ffi-rzmq]: https://github.com/chuckremes/ffi-rzmq
@@ -31,13 +31,14 @@ to the JRuby executable, or set the "JRUBY_OPTS=--1.9" environment variable.
 
 ## 0MQ Socket Types
 
-The following 0MQ socket types are supported (see [sockets.rb][socketsrb] for more info)
+The following 0MQ socket types are supported (see [types.rb][types] for more info)
 
-[socketsrb]: https://github.com/celluloid/celluloid-zmq/blob/master/lib/celluloid/zmq/sockets.rb
+[types]: https://github.com/celluloid/celluloid-zmq/blob/master/lib/celluloid/zmq/socket/types.rb
 
-* ReqSocket / RepSocket
-* PushSocket / PullSocket
-* PubSocket / SubSocket
+* Req / Rep
+* Push / Pull
+* Pub / Sub
+* Dealer / Router
 
 ## Usage
 
@@ -50,7 +51,7 @@ class Server
   include Celluloid::ZMQ
 
   def initialize(address)
-    @socket = PullSocket.new
+    @socket = Socket::Pull.new
 
     begin
       @socket.bind(address)
@@ -73,7 +74,7 @@ class Client
   include Celluloid::ZMQ
 
   def initialize(address)
-    @socket = PushSocket.new
+    @socket = Socket::Push.new
 
     begin
       @socket.connect(address)
@@ -104,4 +105,6 @@ sleep
 Copyright
 ---------
 
-Copyright (c) 2014 Tony Arcieri. See LICENSE.txt for further details.
+Copyright (c) 2014-2015 Tony Arcieri, Donovan Keme.
+
+Distributed under the MIT License. See [LICENSE.txt](https://github.com/celluloid/celluloid/blob/master/LICENSE.txt) for further details.
