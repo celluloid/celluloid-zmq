@@ -1,8 +1,12 @@
-before_install: sudo apt-get install libzmq3-dev
+before_install:
+  - sudo apt-get install libzmq3-dev
+  - if [ "$TRAVIS_RUBY_VERSION" == "rbx-2" ] ; then export BUNDLE_JOBS=1 ; else export BUNDLE_JOBS=4; fi
 
+sudo: false
 script: rake ci
-
 language: ruby
+
+install: bundle install --without=development
 
 rvm:
   - rbx-2
@@ -38,10 +42,3 @@ env:
 
 notifications:
   irc: "irc.freenode.org#celluloid"
-
-before_install:
-  # Only use 1 job until Travis fixes the rbx --jobs issue.
-  - if [ "$TRAVIS_RUBY_VERSION" == "rbx-2" ] ; then export BUNDLE_JOBS=1 ; else export BUNDLE_JOBS=4; fi
-
-sudo: false
-install: bundle install --without=development
