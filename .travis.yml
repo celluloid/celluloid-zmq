@@ -2,7 +2,8 @@ before_install:
   - sudo apt-get install libzmq3-dev
   - if [ "$TRAVIS_RUBY_VERSION" == "rbx-2" ] ; then export BUNDLE_JOBS=1 ; else export BUNDLE_JOBS=4; fi
 
-sudo: false
+sudo: required
+
 script: rake ci
 language: ruby
 
