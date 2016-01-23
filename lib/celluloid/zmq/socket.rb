@@ -21,7 +21,7 @@ module Celluloid
 
       def linger=(value)
         @linger = value || -1
-        @socket.linger = value
+        @socket.options.linger = value
       rescue
         raise IOError, "couldn't set linger: #{$!.message}"
       end
