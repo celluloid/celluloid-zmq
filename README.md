@@ -44,8 +44,6 @@ The following 0MQ socket types are supported (see [sockets.rb][socketsrb] for mo
 ```ruby
 require 'celluloid/zmq'
 
-Celluloid::ZMQ.init
-
 class Server
   include Celluloid::ZMQ
 
