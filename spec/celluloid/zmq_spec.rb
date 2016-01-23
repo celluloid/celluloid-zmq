@@ -45,21 +45,21 @@ RSpec.describe Celluloid::ZMQ do
     end
 
     it "receives messages" do
-      server = bind(Celluloid::ZMQ::Socket::Req.new)
+      server = bind(CZTop::Socket::REQ.new)
       client = actor.new(0)
 
-      server.send_string("hello world")
+      server << "hello world"
       result = client.fetch
       expect(result).to eq("hello world")
     end
 
     it "suspends actor while waiting for message" do
-      server = bind(Celluloid::ZMQ::Socket::Req.new)
+      server = bind(CZTop::Socket::REQ.new)
       client = actor.new(0)
 
       result = client.future.fetch
       expect(client.say_hi).to eq("Hi!")
-      server.send_string("hello world")
+      server << "hello world"
       expect(result.value).to eq("hello world")
     end
   end
@@ -92,26 +92,24 @@ RSpec.describe Celluloid::ZMQ do
     end
 
     it "sends messages" do
-      client = bind(Celluloid::ZMQ::Socket::Rep.new)
+      client = bind(CZTop::Socket::REP.new)
       server = actor.new(0)
 
       server.send("hello world")
 
-      message = ""
-      client.recv_string(message)
+      message = client.receive[0].to_s
       expect(message).to eq("hello world")
     end
 
     it "suspends actor while waiting for message to be sent" do
-      client = bind(Celluloid::ZMQ::Socket::Rep.new)
+      client = bind(CZTop::Socket::REP.new)
       server = actor.new(0)
 
       result = server.future.send("hello world")
 
       expect(server.say_hi).to eq("Hi!")
 
-      message = ""
-      client.recv_string(message)
+      message = client.receive[0].to_s
       expect(message).to eq("hello world")
 
       expect(result.value).to be_truthy
