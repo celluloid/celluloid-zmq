@@ -31,11 +31,9 @@ RSpec.configure(&:disable_monkey_patching!)
 
 RSpec.configure do |config|
   config.around do |ex|
-    Celluloid::ZMQ.init(1) unless ex.metadata[:no_init]
     Celluloid.boot
     ex.run
     Celluloid.shutdown
-    Celluloid::ZMQ.terminate
   end
 
   config.before(:each) do |example|

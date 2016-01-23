@@ -3,25 +3,25 @@ module Celluloid
     class Socket
       # Writable 0MQ sockets have a send method
       module Writable
-        extend Forwardable
-        def_delegator ZMQ, :result_ok?
+
         # Send a message to the socket
         def write(*messages)
-          unless result_ok? @socket.send_strings(messages.flatten)
-            raise IOError, "error sending 0MQ message: #{::ZMQ::Util.error_string}"
-          end
-
+          @socket << messages.flatten
           messages
+        rescue
+          raise IOError, "error sending 0MQ message: #{$!.message}"
         end
         alias_method :<<, :write
-        alias_method :send, :write # deprecated
+
+        # @deprecated
+        alias_method :send, :write
 
         def write_to(address, message)
-          error = [IOError, "Failure sending part of message."]
-          raise *error unless result_ok? @socket.send_string("#{address}", ::ZMQ::SNDMORE)
-          raise *error unless result_ok? @socket.send_string("", ::ZMQ::SNDMORE)
-          raise *error unless result_ok? @socket.send_string(message)
+          @socket.send_to(address, message)
           message
+        rescue
+          raise IOError,
+            "error sending message to #{address.inspect}: #{$!.message}"
         end
 
       end

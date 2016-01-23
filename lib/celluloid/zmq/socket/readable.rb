@@ -3,8 +3,6 @@ module Celluloid
     class Socket
       # Readable 0MQ sockets have a read method
       module Readable
-        extend Forwardable
-        def_delegator ZMQ, :result_ok?
 
         # always set LINGER on readable sockets
         def bind(addr)
@@ -21,24 +19,33 @@ module Celluloid
         def read(buffer = '')
           ZMQ.wait_readable(@socket) if ZMQ.evented?
 
-          unless result_ok? @socket.recv_string buffer
-            raise IOError, "error receiving ZMQ string: #{::ZMQ::Util.error_string}"
-          end
+          frame = CZTop::Frame.receive_from(@socket)
+          buffer << frame.to_s
+
+          @more_parts = frame.more?
           buffer
+        rescue
+          raise IOError, "error receiving ZMQ string: #{$!.message}"
         end
 
         # Multiparts message ?
-        def_delegator :@socket, :more_parts?
+        def more_parts?
+          @more_parts
+        end
 
         # Reads a multipart message, stores it into the given buffer and returns
         # the buffer.
         def read_multipart(buffer = [])
           ZMQ.wait_readable(@socket) if ZMQ.evented?
 
-          unless result_ok? @socket.recv_strings buffer
-            raise IOError, "error receiving ZMQ string: #{::ZMQ::Util.error_string}"
+          CZTop::Message.receive_from(@socket).to_a.each do |part|
+            buffer << part
           end
+
+          @more_parts = false # we've read all parts
           buffer
+        rescue
+          raise IOError, "error receiving ZMQ string: #{$!.message}"
         end
       end
     end

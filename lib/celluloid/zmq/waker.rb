@@ -7,13 +7,9 @@ module Celluloid
     # Works like a ConditionVariable, except it's implemented as a ZMQ socket
     # so that it can be multiplexed alongside other ZMQ sockets
     class Waker
-      extend Forwardable
-      def_delegator ZMQ, :result_ok?
-      PAYLOAD = "\0" # the payload doesn't matter, it's just a signal
-
       def initialize
-        @sender   = ZMQ.context.socket(::ZMQ::PAIR)
-        @receiver = ZMQ.context.socket(::ZMQ::PAIR)
+        @sender   = ::CZTop::Socket::PAIR.new
+        @receiver = ::CZTop::Socket::PAIR.new
 
         @addr = "inproc://waker-#{object_id}"
         @sender.bind @addr
@@ -25,11 +21,12 @@ module Celluloid
       # Wakes up the thread that is waiting for this Waker
       def signal
         @sender_lock.synchronize do
-          unless result_ok? @sender.send_string PAYLOAD
-            raise DeadWakerError, "error sending 0MQ message: #{::ZMQ::Util.error_string}"
-          end
+          @sender.signal
         end
+      rescue
+        raise DeadWakerError, "error sending signal over ZMQ: #{$!.message}"
       end
+      alias_method :wakeup, :signal
 
       # 0MQ socket to wait for messages on
       def socket
@@ -38,12 +35,9 @@ module Celluloid
 
       # Wait for another thread to signal this Waker
       def wait
-        message = ''
-        rc = @receiver.recv_string message
-
-        unless result_ok? rc and message == PAYLOAD
-          raise DeadWakerError, "error receiving ZMQ string: #{::ZMQ::Util.error_string}"
-        end
+        @receiver.wait
+      rescue
+        raise DeadWakerError, "error receiving signal over ZMQ: #{$!.message}"
       end
 
       # Clean up the IO objects associated with this waker
