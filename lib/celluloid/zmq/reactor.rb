@@ -10,7 +10,7 @@ module Celluloid
 
       def initialize
         @waker = Waker.new
-        @poller = ::CZTop::Poller.new
+        @poller = ::CZTop::Poller::Aggregated.new
         @readers = {}
         @writers = {}
 
