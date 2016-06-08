@@ -11,6 +11,7 @@ install: bundle install --without=development
 
 rvm:
   - rbx-2
+  - rbx-3.37
   - jruby
   - 2.2.2
   - 2.2.0
