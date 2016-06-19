@@ -24,7 +24,7 @@ then sent `bind` or `connect`. Once bound or connected, the socket can
 You will need the ZeroMQ library and the CZMQ library installed as it's
 accessed via FFI. See [CZTop][cztop] for installation instructions.
 
-Supported Rubies are MRI >= 2.1.8, JRuby >= 9.0.4.0, and Rubinius >= 3.7.
+Supported Rubies are MRI >= 2.2, JRuby >= 9.0.4.0, and Rubinius >= 3.7.
 
 ## 0MQ Socket Types
 
