@@ -1,8 +1,11 @@
 before_install:
-  - sudo apt-get install libzmq3-dev
-  - if [ "$TRAVIS_RUBY_VERSION" == "rbx-2" ] ; then export BUNDLE_JOBS=1 ; else export BUNDLE_JOBS=4; fi
-sudo: required
-script: rake ci
+- PATH="/usr/lib/ccache:$PATH" # enable ccache
+- export LD_LIBRARY_PATH=$HOME/lib # custom libs (for execution)
+- export PKG_CONFIG_PATH=$HOME/lib/pkgconfig # custom libs (for linking)
+- export BUNDLE_PATH=$HOME/.bundle # bundle caching
+- mkdir -p vendor && cd vendor && git clone --depth 1 https://github.com/paddor/czmq-ffi-gen && cd czmq-ffi-gen && ci-scripts/install-libzmq && ci-scripts/install-libczmq
+sudo: false
+script: bundle exec rake ci
 language: ruby
 install: bundle install --without=development
 rvm:
@@ -27,6 +30,8 @@ matrix:
 env:
   global:
   - NUMBER_OF_PROCESSORS=4 CELLULOID_CONFIG_FILE=.env-ci
+  # recognized by czmq-ffi-gen's ci-scripts
+  - CZMQ_VERSION=HEAD ZMQ_VERSION=HEAD
   matrix:
   - CELLULOID_BACKPORTED=true
   - CELLULOID_BACKPORTED=false
