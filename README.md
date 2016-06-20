@@ -6,13 +6,13 @@
 [![Coverage Status](https://coveralls.io/repos/celluloid/celluloid-zmq/badge.png?branch=master)](https://coveralls.io/r/celluloid/celluloid-zmq)
 
 `Celluloid::ZMQ` provides Celluloid actors that can interact with [0MQ sockets][0mq].
-Underneath, it's built on the [ffi-rzmq][ffi-rzmq] library. `Celluloid::ZMQ` was
+Underneath, it's built on the [CZTop][cztop] library. `Celluloid::ZMQ` was
 primarily created for the purpose of writing [DCell][dcell], distributed Celluloid
 over 0MQ, so before you go building your own distributed Celluloid systems with
 `Celluloid::ZMQ`, be sure to give DCell a look and decide if it fits your purposes.
 
 [0mq]: http://www.zeromq.org/
-[ffi-rzmq]: https://github.com/chuckremes/ffi-rzmq
+[cztop]: https://github.com/paddor/cztop
 [dcell]: https://github.com/celluloid/dcell
 
 It provides different `Celluloid::ZMQ::Socket` classes which can be initialized
@@ -21,13 +21,10 @@ then sent `bind` or `connect`. Once bound or connected, the socket can
 
 ## Supported Platforms
 
-Celluloid::IO requires Ruby 1.9 support on all Ruby VMs. You will also need
-the ZeroMQ library installed as it's accessed via FFI.
+You will need the ZeroMQ library and the CZMQ library installed as it's
+accessed via FFI. See [CZTop][cztop] for installation instructions.
 
-Supported VMs are Ruby 1.9.3, JRuby 1.6, and Rubinius 2.0.
-
-To use JRuby in 1.9 mode, you'll need to pass the "--1.9" command line option
-to the JRuby executable, or set the "JRUBY_OPTS=--1.9" environment variable.
+Supported Rubies are MRI >= 2.2, JRuby >= 9.0.4.0, and Rubinius >= 3.7.
 
 ## 0MQ Socket Types
 
@@ -44,8 +41,6 @@ The following 0MQ socket types are supported (see [types.rb][types] for more inf
 
 ```ruby
 require 'celluloid/zmq'
-
-Celluloid::ZMQ.init
 
 class Server
   include Celluloid::ZMQ
@@ -85,8 +80,7 @@ class Client
   end
 
   def write(message)
-    @socket.send(message)
-
+    @socket << message
     nil
   end
 end

@@ -7,7 +7,7 @@ module Celluloid
         include Writable
 
         def initialize
-          super :req
+          super :REQ
         end
       end
 
@@ -17,7 +17,7 @@ module Celluloid
         include Writable
 
         def initialize
-          super :rep
+          super :REP
         end
       end
 
@@ -27,7 +27,7 @@ module Celluloid
         include Writable
 
         def initialize
-          super :dealer
+          super :DEALER
         end
       end
 
@@ -37,7 +37,7 @@ module Celluloid
         include Writable
 
         def initialize
-          super :router
+          super :ROUTER
         end
       end
 
@@ -46,7 +46,7 @@ module Celluloid
         include Writable
 
         def initialize
-          super :push
+          super :PUSH
         end
       end
 
@@ -55,7 +55,7 @@ module Celluloid
         include Readable
 
         def initialize
-          super :pull
+          super :PULL
         end
       end
 
@@ -64,7 +64,7 @@ module Celluloid
         include Writable
 
         def initialize
-          super :pub
+          super :PUB
         end
       end
 
@@ -75,7 +75,7 @@ module Celluloid
         include Readable
 
         def initialize
-          super :xpub
+          super :XPUB
         end
       end
 
@@ -84,19 +84,19 @@ module Celluloid
         include Readable
 
         def initialize
-          super :sub
+          super :SUB
         end
 
         def subscribe(topic)
-          unless result_ok? @socket.setsockopt(::ZMQ::SUBSCRIBE, topic)
-            fail IOError, "couldn't set subscribe: #{::ZMQ::Util.error_string}"
-          end
+          @socket.subscribe(topic)
+        rescue
+          raise IOError, "couldn't set subscribe: #{$!.message}"
         end
 
         def unsubscribe(topic)
-          unless result_ok? @socket.setsockopt(::ZMQ::UNSUBSCRIBE, topic)
-            fail IOError, "couldn't set unsubscribe: #{::ZMQ::Util.error_string}"
-          end
+          @socket.unsubscribe(topic)
+        rescue
+          raise IOError, "couldn't set unsubscribe: #{$!.message}"
         end
       end
     end
