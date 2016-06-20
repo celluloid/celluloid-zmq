@@ -37,7 +37,7 @@ module Celluloid
         @socket.options.identity
       end
 
-      def set(option, value, length = nil)
+      def set(option, value, _length = nil)
         @socket.options[option] = value
       rescue
         raise IOError, "couldn't set value for option #{option}: #{$!.message}"

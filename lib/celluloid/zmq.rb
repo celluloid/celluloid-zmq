@@ -29,7 +29,7 @@ module Celluloid
       end
 
       # @deprecated
-      def init(worker_threads = 1)
+      def init(*)
         Celluloid::Internals::Logger.deprecate("Calling .init isn't needed anymore")
         nil
       end
@@ -76,7 +76,7 @@ module Celluloid
     module_function :wait_writable
 
     # @deprecated
-    def result_ok?(result)
+    def result_ok?(_result)
       Celluloid::Internals::Logger.deprecate("Checking results of ZMQ operations isn't needed anymore")
       true
     end
