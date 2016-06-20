@@ -31,16 +31,19 @@ module Celluloid
       # @deprecated
       def init(worker_threads = 1)
         Celluloid::Internals::Logger.deprecate("Calling .init isn't needed anymore")
+        nil
       end
 
       # @deprecated
       def context
         Celluloid::Internals::Logger.deprecate("Accessing ZMQ's context is deprecated")
+        nil
       end
 
       # @deprecated
       def terminate
         Celluloid::Internals::Logger.deprecate("Calling .terminate isn't needed anymore")
+        nil
       end
     end
 
