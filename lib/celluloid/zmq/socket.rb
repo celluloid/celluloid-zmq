@@ -75,7 +75,7 @@ unless defined?(::ZMQ)
   # it done by celluloid-zmq.
   module ZMQ
     def self.const_missing(name)
-      Celluloid.logger.deprecate("Using ZMQ::#{name} as an option name is deprecated. Please report if you need this, so it can be added to Celluloid::ZMQ::Socket.")
+      Celluloid::Internals::Logger.deprecate("Using ZMQ::#{name} as an option name is deprecated. Please report if you need this, so it can be added to Celluloid::ZMQ::Socket.")
       return name
     end
   end

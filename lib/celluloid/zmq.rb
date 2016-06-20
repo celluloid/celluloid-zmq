@@ -30,17 +30,17 @@ module Celluloid
 
       # @deprecated
       def init(worker_threads = 1)
-        Celluloid.logger.deprecate("Calling .init isn't needed anymore")
+        Celluloid::Internals::Logger.deprecate("Calling .init isn't needed anymore")
       end
 
       # @deprecated
       def context
-        Celluloid.logger.deprecate("Accessing ZMQ's context is deprecated")
+        Celluloid::Internals::Logger.deprecate("Accessing ZMQ's context is deprecated")
       end
 
       # @deprecated
       def terminate
-        Celluloid.logger.deprecate("Calling .terminate isn't needed anymore")
+        Celluloid::Internals::Logger.deprecate("Calling .terminate isn't needed anymore")
       end
     end
 
@@ -74,7 +74,7 @@ module Celluloid
 
     # @deprecated
     def result_ok?(result)
-      Celluloid.logger.deprecate("Checking results of ZMQ operations isn't needed anymore")
+      Celluloid::Internals::Logger.deprecate("Checking results of ZMQ operations isn't needed anymore")
       true
     end
     module_function :result_ok?
