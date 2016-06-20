@@ -44,10 +44,10 @@ module Celluloid
       def cleanup
         @sender_lock.synchronize do
           begin
-                                     @sender.close
-                                   rescue
-                                     nil
-                                   end
+            @sender.close
+          rescue
+            nil
+          end
         end
         begin
           @receiver.close
