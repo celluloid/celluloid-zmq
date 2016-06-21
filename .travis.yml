@@ -3,9 +3,9 @@ before_install:
 - export LD_LIBRARY_PATH=$HOME/lib # custom libs (for execution)
 - export PKG_CONFIG_PATH=$HOME/lib/pkgconfig # custom libs (for linking)
 - export BUNDLE_PATH=$HOME/.bundle # bundle caching
-- mkdir -p vendor && cd vendor && git clone --depth 1 https://github.com/paddor/czmq-ffi-gen && cd czmq-ffi-gen && ci-scripts/install-libzmq && ci-scripts/install-libczmq
+- ( mkdir -p vendor && cd vendor && git clone --depth 1 https://github.com/paddor/czmq-ffi-gen && cd czmq-ffi-gen && ci-scripts/install-libzmq && ci-scripts/install-libczmq; )
 sudo: false
-script: rake ci
+script: bundle exec rake ci
 language: ruby
 install: bundle install --without=development
 rvm:
