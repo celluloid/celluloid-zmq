@@ -6,26 +6,24 @@ module Celluloid
       extend Forwardable
       def_delegator :@waker, :signal, :wakeup
       def_delegator :@waker, :cleanup, :shutdown
-      def_delegator ZMQ, :result_ok?
 
       def initialize
         @waker = Waker.new
-        @poller = ::ZMQ::Poller.new
+        @poller = ::CZTop::Poller::Aggregated.new
         @readers = {}
         @writers = {}
 
-        rc = @poller.register @waker.socket, ::ZMQ::POLLIN
-        fail "0MQ poll error: #{::ZMQ::Util.error_string}" unless result_ok? rc
+        @poller.add_reader(@waker.socket)
       end
 
       # Wait for the given ZMQ socket to become readable
       def wait_readable(socket)
-        monitor_zmq socket, @readers, ::ZMQ::POLLIN
+        monitor_zmq socket, @readers, :read
       end
 
       # Wait for the given ZMQ socket to become writable
       def wait_writable(socket)
-        monitor_zmq socket, @writers, ::ZMQ::POLLOUT
+        monitor_zmq socket, @writers, :write
       end
 
       # Monitor the given ZMQ socket with the given options
@@ -36,7 +34,14 @@ module Celluloid
           set[socket] = Task.current
         end
 
-        @poller.register socket, type
+        case type
+        when :read
+          @poller.add_reader(socket)
+        when :write
+          @poller.add_writer(socket)
+        else
+          raise ArgumentError, "wrong type: #{type.inspect}"
+        end
 
         Task.suspend :zmqwait
         socket
@@ -48,13 +53,13 @@ module Celluloid
         if timeout
           timeout *= 1000 # Poller uses millisecond increments
         else
-          timeout = :blocking
+          timeout = 0 # blocking
         end
 
-        rc = @poller.poll(timeout)
-
-        unless result_ok? rc
-          fail IOError, "0MQ poll error: #{::ZMQ::Util.error_string}"
+        begin
+          @poller.wait(timeout)
+        rescue
+          raise IOError, "ZMQ poll error: #{$!.message}"
         end
 
         @poller.readables.each do |sock|
@@ -62,7 +67,7 @@ module Celluloid
             @waker.wait
           else
             task = @readers.delete sock
-            @poller.deregister sock, ::ZMQ::POLLIN
+            @poller.remove_reader(sock)
 
             if task
               task.resume
@@ -74,12 +79,12 @@ module Celluloid
 
         @poller.writables.each do |sock|
           task = @writers.delete sock
-          @poller.deregister sock, ::ZMQ::POLLOUT
+          @poller.remove_writer(sock)
 
           if task
             task.resume
           else
-            Celluloid::Logger.debug "ZMQ error: got write event without associated reader"
+            Celluloid::Logger.debug "ZMQ error: got write event without associated writer"
           end
         end
       end

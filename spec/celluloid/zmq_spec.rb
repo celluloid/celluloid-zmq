@@ -15,37 +15,7 @@ RSpec.describe Celluloid::ZMQ, library: :ZMQ do
   end
 
   describe ".init" do
-    it "inits a ZMQ context", :no_init do
-      Celluloid::ZMQ.init
-      server = bind(Celluloid::ZMQ.context.socket(::ZMQ::REQ))
-      client = connect(Celluloid::ZMQ.context.socket(::ZMQ::REP))
-
-      server.send_string("hello world")
-      message = ""
-      client.recv_string(message)
-      expect(message).to eq("hello world")
-    end
-
-    it "can set ZMQ context manually", :no_init do
-      context = ::ZMQ::Context.new(1)
-      begin
-        Celluloid::ZMQ.context = context
-        expect(Celluloid::ZMQ.context).to eq(context)
-      ensure
-        context.terminate
-      end
-    end
-
-    it "raises an error when trying to access context and it isn't initialized", :no_init do
-      expect { Celluloid::ZMQ.context }.to raise_error(Celluloid::ZMQ::UninitializedError)
-    end
-
-    it "raises an error when trying to access context after it is terminated" do
-      Celluloid::ZMQ.terminate
-      expect { Celluloid::ZMQ.context }.to raise_error(Celluloid::ZMQ::UninitializedError)
-      Celluloid::ZMQ.init
-      expect(Celluloid::ZMQ.context).not_to be_nil
-    end
+    # deprecated
   end
 
   describe Celluloid::ZMQ::Socket::Rep do
@@ -75,21 +45,21 @@ RSpec.describe Celluloid::ZMQ, library: :ZMQ do
     end
 
     it "receives messages" do
-      server = bind(Celluloid::ZMQ.context.socket(::ZMQ::REQ))
+      server = bind(CZTop::Socket::REQ.new)
       client = actor.new(0)
 
-      server.send_string("hello world")
+      server << "hello world"
       result = client.fetch
       expect(result).to eq("hello world")
     end
 
     it "suspends actor while waiting for message" do
-      server = bind(Celluloid::ZMQ.context.socket(::ZMQ::REQ))
+      server = bind(CZTop::Socket::REQ.new)
       client = actor.new(0)
 
       result = client.future.fetch
       expect(client.say_hi).to eq("Hi!")
-      server.send_string("hello world")
+      server << "hello world"
       expect(result.value).to eq("hello world")
     end
   end
@@ -122,26 +92,24 @@ RSpec.describe Celluloid::ZMQ, library: :ZMQ do
     end
 
     it "sends messages" do
-      client = bind(Celluloid::ZMQ.context.socket(::ZMQ::REP))
+      client = bind(CZTop::Socket::REP.new)
       server = actor.new(0)
 
       server.send("hello world")
 
-      message = ""
-      client.recv_string(message)
+      message = client.receive[0].to_s
       expect(message).to eq("hello world")
     end
 
     it "suspends actor while waiting for message to be sent" do
-      client = bind(Celluloid::ZMQ.context.socket(::ZMQ::REP))
+      client = bind(CZTop::Socket::REP.new)
       server = actor.new(0)
 
       result = server.future.send("hello world")
 
       expect(server.say_hi).to eq("Hi!")
 
-      message = ""
-      client.recv_string(message)
+      message = client.receive[0].to_s
       expect(message).to eq("hello world")
 
       expect(result.value).to be_truthy

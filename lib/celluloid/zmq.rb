@@ -1,4 +1,4 @@
-require "ffi-rzmq"
+require 'cztop'
 
 $CELLULOID_ZMQ_BACKPORTED = (ENV["CELLULOID_ZMQ_BACKPORTED"] != "false") unless defined?($CELLULOID_ZMQ_BACKPORTED)
 
@@ -28,19 +28,22 @@ module Celluloid
         klass.mailbox_class Celluloid::ZMQ::Mailbox
       end
 
-      # Obtain a 0MQ context
-      def init(worker_threads = 1)
-        @context ||= ::ZMQ::Context.new(worker_threads)
+      # @deprecated
+      def init(*)
+        Celluloid::Internals::Logger.deprecate("Calling .init isn't needed anymore")
+        nil
       end
 
+      # @deprecated
       def context
-        fail UninitializedError, "you must initialize Celluloid::ZMQ by calling Celluloid::ZMQ.init" unless @context
-        @context
+        Celluloid::Internals::Logger.deprecate("Accessing ZMQ's context is deprecated")
+        nil
       end
 
+      # @deprecated
       def terminate
-        @context.terminate if @context
-        @context = nil
+        Celluloid::Internals::Logger.deprecate("Calling .terminate isn't needed anymore")
+        nil
       end
     end
 
@@ -72,8 +75,10 @@ module Celluloid
     end
     module_function :wait_writable
 
-    def result_ok?(result)
-      ::ZMQ::Util.resultcode_ok?(result)
+    # @deprecated
+    def result_ok?(_result)
+      Celluloid::Internals::Logger.deprecate("Checking results of ZMQ operations isn't needed anymore")
+      true
     end
     module_function :result_ok?
   end
