@@ -5,7 +5,7 @@ before_install:
 - export BUNDLE_PATH=$HOME/.bundle # bundle caching
 - mkdir -p vendor && cd vendor && git clone --depth 1 https://github.com/paddor/czmq-ffi-gen && cd czmq-ffi-gen && ci-scripts/install-libzmq && ci-scripts/install-libczmq
 sudo: false
-script: bundle exec rake ci
+script: rake ci
 language: ruby
 install: bundle install --without=development
 rvm:
