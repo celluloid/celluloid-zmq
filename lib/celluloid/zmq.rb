@@ -14,6 +14,8 @@ require "celluloid/zmq/socket/readable"
 require "celluloid/zmq/socket/writable"
 require "celluloid/zmq/socket/types"
 
+require 'celluloid/zmq/pubsub_notifier'
+
 module Celluloid
   # Actors which run alongside 0MQ sockets
   module ZMQ
