@@ -13,14 +13,18 @@ script: bundle exec rake ci
 language: ruby
 install: bundle install --without=development
 rvm:
-- rbx
-- 2.2.3
 - jruby-9.1.2.0
 - 2.1.8
+- 2.2.3
 - 2.3.1
 - ruby-head
 - jruby-head
 matrix:
+  include:
+    - rvm: rbx-4
+      os: linux
+      env: RBX_RUBY_COMPAT=10.0 RBX_VERSION=4.15
+      dist: trusty
   fast_finish: true
   allow_failures:
   - rvm: jruby-9.1.2.0
