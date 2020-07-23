@@ -1,4 +1,5 @@
 before_install:
+- gem install bundler -v '1.17.3'
 - PATH="/usr/lib/ccache:$PATH" # enable ccache
 - export LD_LIBRARY_PATH=$HOME/lib # custom libs (for execution)
 - export PKG_CONFIG_PATH=$HOME/lib/pkgconfig # custom libs (for linking)
@@ -11,26 +12,22 @@ cache:
   - $HOME/.bundle
 script: bundle exec rake ci
 language: ruby
-install: bundle install --without=development
+install: bundle _1.17.3_ install --without=development
 rvm:
 - rbx
-- 2.2.3
 - jruby-9.1.2.0
 - 2.1.8
+- 2.2.3
 - 2.3.1
 - ruby-head
 - jruby-head
 matrix:
   fast_finish: true
   allow_failures:
+  - rvm: rbx
   - rvm: jruby-9.1.2.0
-  - rvm: 2.1.8
   - rvm: ruby-head
   - rvm: jruby-head
-  - env: CELLULOID_BACKPORTED=true
-  - env: CELLULOID_BACKPORTED=false CELLULOID_LEAKTEST=true
-  - env: CELLULOID_BACKPORTED=false CELLULOID_TASK_CLASS=Threaded
-  - env: CELLULOID_BACKPORTED=true CELLULOID_TASK_CLASS=Threaded
 env:
   global:
   - NUMBER_OF_PROCESSORS=4 CELLULOID_CONFIG_FILE=.env-ci

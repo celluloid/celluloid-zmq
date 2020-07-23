@@ -1,2 +1,83 @@
-inherit_from:
-  - culture/rubocop/rubocop.yml
+Lint/HandleExceptions:
+  Enabled: false
+
+Lint/LiteralInCondition:
+  Enabled: false
+
+Lint/UnusedBlockArgument:
+  Enabled: false
+
+Metrics/MethodLength:
+  CountComments: false
+  Max: 20
+
+Metrics/LineLength:
+  Max: 120
+
+Metrics/CyclomaticComplexity:
+  Max: 9
+
+Metrics/PerceivedComplexity:
+  Max: 9
+
+Metrics/AbcSize:
+  Max: 20
+
+Style/Documentation:
+  Enabled: false
+
+Style/ModuleFunction:
+  Enabled: false
+
+Style/AndOr:
+  Enabled: true
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: double_quotes
+
+Style/EachWithObject:
+  Enabled: true
+
+Style/InfiniteLoop:
+  Enabled: false
+
+Style/SpaceAroundEqualsInParameterDefault:
+  Enabled: false
+
+Style/AccessModifierIndentation:
+  Enabled: false
+
+Style/TrailingCommaInArguments:
+  Enabled: true
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInLiteral:
+  Enabled: true
+  EnforcedStyleForMultiline: comma
+
+Style/SpaceInsideBlockBraces:
+  Enabled: true
+  EnforcedStyle: space
+
+Style/SpaceInsideHashLiteralBraces:
+  Enabled: true
+  EnforcedStyle: no_space
+
+Style/EmptyLinesAroundAccessModifier:
+  Enabled: false
+
+Style/RescueModifier:
+  Enabled: false
+
+Style/GlobalVars:
+  Enabled: false
+
+Style/FormatString:
+  EnforcedStyle: percent
+
+Style/TrailingUnderscoreVariable:
+  Enabled: false
+
+Style/ParallelAssignment:
+  Enabled: false
